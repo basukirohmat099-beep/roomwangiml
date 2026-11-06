@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0714">
+  <title>RW ML — Room Wangi</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+    :root{color-scheme:dark;--bg:#0b0714;--panel:rgba(20,14,33,.9);--line:rgba(190,151,255,.14);--muted:#9288a5;--text:#f5f0ff;--purple:#a56cff}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;overflow-x:hidden;color:var(--text);background:var(--bg);font-family:Inter,sans-serif}
+    .glow{position:fixed;width:360px;height:360px;border-radius:50%;filter:blur(110px);opacity:.2;pointer-events:none}
+    .glow-one{background:#792dce;top:-180px;left:-120px}.glow-two{background:#c13d9b;right:-180px;bottom:-180px}
+    .topbar{height:76px;padding:0 clamp(20px,6vw,84px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);position:relative}
+    .brand{display:flex;align-items:center;gap:11px;color:var(--text);text-decoration:none;font-weight:800;letter-spacing:1px}
+    .brand-mark{width:39px;height:39px;display:grid;place-items:center;border-radius:11px;background:linear-gradient(135deg,#b477ff,#6731b7);font-family:"Barlow Condensed";font-size:21px}
+    .brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:2.1px;margin-top:2px}
+    .status{font-size:10px;letter-spacing:1.5px;color:#c8badf}.status i,.live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#a879ff;box-shadow:0 0 12px #a879ff;margin-right:7px}
+    .login-screen{min-height:100vh;display:grid;place-items:center;padding:28px 18px;position:relative;z-index:2}
+    .login-card{width:min(420px,100%);padding:30px;background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,.35);backdrop-filter:blur(14px)}
+    .login-brand{text-align:center;margin-bottom:28px}.login-mark{width:54px;height:54px;margin:0 auto 15px;display:grid;place-items:center;border-radius:15px;background:linear-gradient(135deg,#b477ff,#6731b7);font:800 25px "Barlow Condensed",sans-serif;box-shadow:0 0 28px rgba(165,108,255,.25)}
+    .login-brand h1{font-size:43px}.login-brand p{color:var(--muted);font-size:11px;letter-spacing:2px;margin:10px 0 0}
+    .login-form{display:grid;gap:15px}.login-field label{display:block;color:#cbb9e4;font-size:11px;margin-bottom:8px}.login-field input{width:100%;height:46px;padding:0 13px;border-radius:9px;border:1px solid var(--line);background:#100a1c;color:var(--text);font:13px Inter,sans-serif;outline:none}.login-field input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(165,108,255,.12)}
+    .password-wrap{position:relative}.password-wrap input{padding-right:76px}.password-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#cdb7ed;font-size:10px;letter-spacing:.5px;cursor:pointer;padding:8px}
+    .login-submit{height:46px;border:0;border-radius:9px;background:linear-gradient(100deg,#743bc0,#a56cff);color:white;font-weight:700;letter-spacing:1px;cursor:pointer;margin-top:4px}.login-error{min-height:16px;margin:0;color:#ff8eaa;font-size:11px;text-align:center}.login-hint{margin:16px 0 0;color:#756b84;font-size:10px;line-height:1.6;text-align:center}
+    [hidden]{display:none!important}.logout{margin-left:14px;padding:7px 10px;border:1px solid var(--line);border-radius:7px;background:transparent;color:#cdb7ed;font-size:9px;letter-spacing:1px;cursor:pointer}
+    .wrap{width:min(720px,calc(100% - 36px));margin:76px auto 50px;position:relative}
+    .intro{text-align:center;margin-bottom:34px}.eyebrow{color:#b58be9;font-size:10px;font-weight:700;letter-spacing:3px;margin:0 0 10px}
+    h1{font:800 clamp(48px,10vw,76px)/.95 "Barlow Condensed",sans-serif;letter-spacing:2px;margin:0}h1 span{color:var(--purple);text-shadow:0 0 28px rgba(165,108,255,.28)}
+    .sub{color:var(--muted);font-size:13px;margin-top:15px}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:25px;box-shadow:0 24px 80px rgba(0,0,0,.28);backdrop-filter:blur(14px)}
+    .panel-head{display:flex;justify-content:space-between;align-items:end;padding-bottom:19px;border-bottom:1px solid var(--line)}
+    .panel-head .eyebrow{margin-bottom:5px}h2{margin:0;font:700 27px "Barlow Condensed",sans-serif;letter-spacing:.5px}
+    .count{color:#cbb0ff;font-size:10px;letter-spacing:1.4px}
+    .feature-list{display:grid}.feature{min-height:83px;display:flex;align-items:center;gap:14px;border-bottom:1px solid rgba(190,151,255,.1)}
+    .feature-icon{width:43px;height:43px;flex:0 0 43px;display:grid;place-items:center;border-radius:12px;color:#d8c2ff;font:700 15px "Barlow Condensed",sans-serif;background:rgba(165,108,255,.12);border:1px solid rgba(165,108,255,.2)}
+    .feature-copy{flex:1}.feature-copy h3{margin:0 0 5px;font-size:14px;font-weight:600}.feature-copy p{margin:0;color:var(--muted);font-size:11px}
+    .switch{width:47px;height:26px;position:relative;display:inline-block;flex:0 0 auto}.switch input{opacity:0;width:0;height:0}
+    .slider{position:absolute;inset:0;cursor:pointer;border-radius:30px;background:#332b40;border:1px solid #51445f;transition:.2s}
+    .slider:before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;border-radius:50%;background:#b8afc4;transition:.2s}
+    .switch input:checked+.slider{background:linear-gradient(100deg,#743bc0,#b66aff);border-color:#b78aff;box-shadow:0 0 16px rgba(165,108,255,.22)}
+    .switch input:checked+.slider:before{transform:translateX(21px);background:white}
+    .switch input:focus-visible+.slider{outline:2px solid white;outline-offset:3px}
+    .panel-foot{display:flex;align-items:center;gap:3px;padding-top:19px;color:var(--muted);font-size:10px}
+    .panel-foot button{margin-left:auto;color:#cdb7ed;border:1px solid var(--line);background:transparent;border-radius:7px;padding:8px 12px;font-size:9px;letter-spacing:1px;cursor:pointer}
+    .panel-foot button:hover{border-color:var(--purple);color:white}
+    .notice{color:#756b84;font-size:10px;line-height:1.7;text-align:center;max-width:520px;margin:18px auto 0}
+    footer{text-align:center;color:#6f647e;font-size:9px;letter-spacing:2px;padding:0 0 28px}footer span{color:var(--purple);padding:0 5px}
+    @media(max-width:520px){.login-card{padding:25px 20px}.wrap{margin-top:58px}.panel{padding:19px 16px}.feature{min-height:76px}.status{font-size:8px}}
+  </style>
+</head>
+<body>
+  <div class="glow glow-one"></div><div class="glow glow-two"></div>
+  <section class="login-screen" id="login-screen" aria-labelledby="login-title">
+    <div class="login-card">
+      <div class="login-brand"><div class="login-mark">RW</div><h1 id="login-title">ROOM <span>WANGI</span></h1><p>RW ML / MEMBER LOGIN</p></div>
+      <form class="login-form" id="login-form">
+        <div class="login-field"><label for="username">USERNAME</label><input id="username" name="username" type="text" placeholder="Masukkan username" autocomplete="username" required></div>
+        <div class="login-field"><label for="password">PASSWORD</label><div class="password-wrap"><input id="password" name="password" type="password" placeholder="Masukkan password" autocomplete="current-password" required><button class="password-toggle" id="password-toggle" type="button" aria-label="Tampilkan password" aria-pressed="false">LIHAT</button></div></div>
+        <button class="login-submit" type="submit">MASUK</button>
+        <p class="login-error" id="login-error" role="alert"></p>
+      </form>
+      <p class="login-hint">Masukkan akun untuk membuka panel ROOM WANGI.</p>
+    </div>
+  </section>
+  <div id="dashboard" hidden>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="RW ML beranda"><span class="brand-mark">RW</span><span>RW <b>ML</b><small>ROOM WANGI</small></span></a>
+    <div><span class="status"><i></i>PANEL AKTIF</span><button class="logout" id="logout" type="button">KELUAR</button></div>
+  </header>
+  <main class="wrap">
+    <section class="intro"><p class="eyebrow">CONTROL PANEL / MLBB</p><h1>ROOM <span>WANGI</span></h1><p class="sub">Atur pilihan fitur melalui panel di bawah.</p></section>
+    <section class="panel" aria-labelledby="panel-title">
+      <div class="panel-head"><div><p class="eyebrow">PENGATURAN</p><h2 id="panel-title">Daftar fitur</h2></div><span class="count" id="enabled-count">0 / 4 AKTIF</span></div>
+      <div class="feature-list">
+        <article class="feature"><div class="feature-icon">WS</div><div class="feature-copy"><h3>Auto WS</h3><p>Pengaturan Auto WS</p></div><label class="switch" aria-label="Aktifkan Auto WS"><input type="checkbox" data-feature="Auto WS"><span class="slider"></span></label></article>
+        <article class="feature"><div class="feature-icon">LS</div><div class="feature-copy"><h3>Auto LS</h3><p>Pengaturan Auto LS</p></div><label class="switch" aria-label="Aktifkan Auto LS"><input type="checkbox" data-feature="Auto LS"><span class="slider"></span></label></article>
+        <article class="feature"><div class="feature-icon">KH</div><div class="feature-copy"><h3>Kebal Hero</h3><p>Pengaturan Kebal Hero</p></div><label class="switch" aria-label="Aktifkan Kebal Hero"><input type="checkbox" data-feature="Kebal Hero"><span class="slider"></span></label></article>
+        <article class="feature"><div class="feature-icon">1H</div><div class="feature-copy"><h3>1 Hit</h3><p>Pengaturan 1 Hit</p></div><label class="switch" aria-label="Aktifkan 1 Hit"><input type="checkbox" data-feature="1 Hit"><span class="slider"></span></label></article>
+      </div>
+      <div class="panel-foot"><span class="live-dot"></span><span id="panel-status" aria-live="polite">Semua fitur dalam keadaan OFF</span><button id="reset" type="button">RESET</button></div>
+    </section>
+    <p class="notice">Panel tampilan RW ML. Tombol ON/OFF hanya mengubah status di halaman ini dan tidak mengubah permainan Mobile Legends.</p>
+  </main>
+  <footer>RW ML <span>·</span> ROOM WANGI</footer>
+  </div>
+  <script>
+    const loginScreen = document.getElementById('login-screen');
+    const dashboard = document.getElementById('dashboard');
+    const loginForm = document.getElementById('login-form');
+    const loginError = document.getElementById('login-error');
+    const logout = document.getElementById('logout');
+    const passwordInput = document.getElementById('password');
+    const passwordToggle = document.getElementById('password-toggle');
+
+    passwordToggle.addEventListener('click', () => {
+      const show = passwordInput.type === 'password';
+      passwordInput.type = show ? 'text' : 'password';
+      passwordToggle.textContent = show ? 'SEMBUNYI' : 'LIHAT';
+      passwordToggle.setAttribute('aria-label', show ? 'Sembunyikan password' : 'Tampilkan password');
+      passwordToggle.setAttribute('aria-pressed', String(show));
+    });
+
+    loginForm.addEventListener('submit', event => {
+      event.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      if (username === 'RW BY YANN' && password === 'ROOM WANGI') {
+        loginError.textContent = '';
+        loginScreen.hidden = true;
+        dashboard.hidden = false;
+      } else {
+        loginError.textContent = 'Username atau password tidak sesuai.';
+      }
+    });
+
+    logout.addEventListener('click', () => {
+      dashboard.hidden = true;
+      loginScreen.hidden = false;
+      loginForm.reset();
+      passwordInput.type = 'password';
+      passwordToggle.textContent = 'LIHAT';
+      passwordToggle.setAttribute('aria-label', 'Tampilkan password');
+      passwordToggle.setAttribute('aria-pressed', 'false');
+      loginError.textContent = '';
+    });
+
+    const toggles = [...document.querySelectorAll('input[data-feature]')];
+    const count = document.getElementById('enabled-count');
+    const status = document.getElementById('panel-status');
+    const reset = document.getElementById('reset');
+
+    function refreshPanel() {
+      const active = toggles.filter(toggle => toggle.checked);
+      count.textContent = `${active.length} / ${toggles.length} AKTIF`;
+      if (active.length === 0) status.textContent = 'Semua fitur dalam keadaan OFF';
+      else if (active.length === toggles.length) status.textContent = 'Semua pilihan dalam keadaan ON';
+      else status.textContent = `${active.map(item => item.dataset.feature).join(', ')}: ON`;
+    }
+
+    toggles.forEach(toggle => toggle.addEventListener('change', refreshPanel));
+    reset.addEventListener('click', () => {
+      toggles.forEach(toggle => { toggle.checked = false; });
+      refreshPanel();
+    });
+    refreshPanel();
+  </script>
+</body>
+</html>
